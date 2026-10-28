@@ -170,11 +170,11 @@ class MainActivity : ComponentActivity() {
                         service.characteristics.forEach { characteristic ->
                             val props = buildList {
                                 val p = characteristic.properties
-                                if (p and BluetoothGattCharacteristic.PROPERTY_READ != 0) add("可读")
-                                if (p and BluetoothGattCharacteristic.PROPERTY_NOTIFY != 0) add("通知")
-                                if (p and BluetoothGattCharacteristic.PROPERTY_INDICATE != 0) add("指示")
-                                if (p and BluetoothGattCharacteristic.PROPERTY_WRITE != 0) add("可写")
-                                if (p and BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE != 0) add("无响应写")
+                                if ((p and BluetoothGattCharacteristic.PROPERTY_READ) != 0) add("可读")
+                                if ((p and BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) add("通知")
+                                if ((p and BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) add("指示")
+                                if ((p and BluetoothGattCharacteristic.PROPERTY_WRITE) != 0) add("可写")
+                                if ((p and BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE) != 0) add("无响应写")
                             }.joinToString("、").ifBlank { "无常见属性" }
                             val row = LinearLayout(this@MainActivity).apply {
                                 orientation = LinearLayout.VERTICAL
@@ -182,7 +182,7 @@ class MainActivity : ComponentActivity() {
                             row.addView(TextView(this@MainActivity).apply {
                                 text = "${characteristic.uuid}\n属性：$props"
                             })
-                            if (characteristic.properties and BluetoothGattCharacteristic.PROPERTY_READ != 0) {
+                            if ((characteristic.properties and BluetoothGattCharacteristic.PROPERTY_READ) != 0) {
                                 row.addView(Button(this@MainActivity).apply {
                                     text = "读取此特征（只读）"
                                     setOnClickListener {

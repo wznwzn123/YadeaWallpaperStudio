@@ -211,7 +211,7 @@ class MainActivity : ComponentActivity() {
                     })
                 }
             }
-        }, false)
+        })
     }
 
     override fun onDestroy() {

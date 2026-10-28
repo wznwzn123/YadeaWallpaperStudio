@@ -204,14 +204,32 @@ class MainActivity : ComponentActivity() {
                 characteristic: BluetoothGattCharacteristic,
                 statusCode: Int
             ) {
-                val value = characteristic.value?.joinToString(" ") { "%02X".format(it) } ?: "(空)"
-                runOnUiThread {
-                    root.addView(TextView(this@MainActivity).apply {
-                        text = "读取结果 ${characteristic.uuid}\n状态：$statusCode\nHEX：$value"
-                    })
-                }
+                showReadResult(characteristic.uuid, characteristic.value, statusCode)
+            }
+
+            override fun onCharacteristicRead(
+                g: BluetoothGatt,
+                characteristic: BluetoothGattCharacteristic,
+                value: ByteArray,
+                statusCode: Int
+            ) {
+                showReadResult(characteristic.uuid, value, statusCode)
             }
         })
+    }
+
+    private fun showReadResult(uuid: UUID, bytes: ByteArray?, statusCode: Int) {
+        val hex = bytes?.joinToString(" ") { "%02X".format(it) } ?: "(空)"
+        runOnUiThread {
+            status.text = if (statusCode == BluetoothGatt.GATT_SUCCESS) {
+                "读取完成：$uuid"
+            } else {
+                "读取失败：$uuid，状态码 $statusCode"
+            }
+            root.addView(TextView(this).apply {
+                text = "读取结果 $uuid\n状态：$statusCode\nHEX：$hex"
+            })
+        }
     }
 
     override fun onDestroy() {
